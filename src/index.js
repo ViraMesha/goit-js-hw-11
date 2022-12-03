@@ -2,6 +2,7 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import ApiService from './api-service';
+import axios from 'axios';
 
     
 const form = document.querySelector('.search-form');
