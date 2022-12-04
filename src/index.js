@@ -80,7 +80,7 @@ function onLoadMoreBtn() {
   newsApiService.fetchImages().then(data => {
     gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
     simpleLightBox.refresh()
-    newsApiService.totalImagesAmount += 40;
+    console.log(newsApiService.totalImagesAmount += 40)
    if (newsApiService.totalImagesAmount >= data.totalHits) {
      button.classList.add('is-hidden');
      Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");

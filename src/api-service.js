@@ -1,12 +1,11 @@
 import axios from 'axios';
-console.log(axios)
 
 export default class ApiService {
     
     constructor() {
         this.searchValue = '';
         this.page = 1;
-        this.totalImagesAmount = 0;
+        this.totalImagesAmount = 40;
     }
 
     async fetchImages() {
