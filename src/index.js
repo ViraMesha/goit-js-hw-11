@@ -2,7 +2,6 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import ApiService from './api-service';
-import axios from 'axios';
 
     
 const form = document.querySelector('.search-form');
@@ -20,11 +19,11 @@ button.classList.add('is-hidden');
 
 
 function onSearch(event) {
-    event.preventDefault();
+  event.preventDefault();
+  gallery.innerHTML = '';
   newsApiService.searchValue = event.currentTarget.elements.searchQuery.value;
   
   if (!newsApiService.searchValue) {
-    gallery.innerHTML = '';
         Notiflix.Notify.warning("The text field is empty. Please type something into it and retry.");
         return;
   };
@@ -32,13 +31,17 @@ function onSearch(event) {
   newsApiService.fetchImages().then(data => {
         if(!data.hits.length) {
             return Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-    }
-    gallery.innerHTML = '';
+    };
+
+     if (data.hits.length >= 40) {
+      button.classList.remove('is-hidden');
+    };
+    
     createMarkup(data.hits);
     simpleLightBox.refresh();
     Notiflix.Notify.success(`Hooray! We found ${[data.totalHits]} images.`);
 
-    const { height: cardHeight } = document
+  const { height: cardHeight } = document
   .querySelector(".gallery")
   .firstElementChild.getBoundingClientRect();
 
@@ -46,13 +49,7 @@ window.scrollBy({
   top: cardHeight * -200,
   behavior: "smooth",
 });
-
-    if (data.hits.length >= 40) {
-      button.classList.remove('is-hidden');
-    };
-
-    });
-    
+    }); 
 }
 
 function createMarkup(arr) {
