@@ -54,7 +54,7 @@ window.scrollBy({
 }
 
 function createMarkup(arr) {
-    return markup = arr.map(({ largeImageURL, tags, webformatURL, likes, views, comments, downloads }) => `<div class="photo-card">
+    return arr.map(({ largeImageURL, tags, webformatURL, likes, views, comments, downloads }) => `<div class="photo-card">
          <a href="${largeImageURL}">
   <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
   <div class="info">
