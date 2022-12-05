@@ -20,7 +20,6 @@ button.classList.add('is-hidden');
 
 function onSearch(event) {
   event.preventDefault();
-  gallery.innerHTML = '';
   newsApiService.searchValue = event.currentTarget.elements.searchQuery.value;
   
   if (!newsApiService.searchValue) {
@@ -29,15 +28,17 @@ function onSearch(event) {
   };
   newsApiService.resetPage();
   newsApiService.fetchImages().then(data => {
-        if(!data.hits.length) {
+    console.log(data)
+    if (!data.hits.length) {
+      gallery.innerHTML = '';
+      button.classList.add('is-hidden');
             return Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
     };
 
      if (data.hits.length >= 40) {
       button.classList.remove('is-hidden');
     };
-    
-    createMarkup(data.hits);
+    gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
     simpleLightBox.refresh();
     Notiflix.Notify.success(`Hooray! We found ${[data.totalHits]} images.`);
 
@@ -53,7 +54,7 @@ window.scrollBy({
 }
 
 function createMarkup(arr) {
-    const markup = arr.map(({ largeImageURL, tags, webformatURL, likes, views, comments, downloads }) => `<div class="photo-card">
+    return markup = arr.map(({ largeImageURL, tags, webformatURL, likes, views, comments, downloads }) => `<div class="photo-card">
          <a href="${largeImageURL}">
   <img src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
   <div class="info">
@@ -71,7 +72,6 @@ function createMarkup(arr) {
     </p>
   </div>
 </div>`).join('');
-    gallery.insertAdjacentHTML('beforeend', markup)
 }
 
 
@@ -79,8 +79,7 @@ function onLoadMoreBtn() {
   newsApiService.incrementPage()
   newsApiService.fetchImages().then(data => {
     gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
-    simpleLightBox.refresh()
-    console.log(newsApiService.totalImagesAmount += 40)
+   newsApiService.totalImagesAmount += 40
    if (newsApiService.totalImagesAmount >= data.totalHits) {
      button.classList.add('is-hidden');
      Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
